@@ -40,38 +40,38 @@ RANGES = [
   }
 ]
 
-def range_corners(svg, config)
-  svg.rect x: 0, y: 0, width: 128, height: 128 if config[:corners].include?(:nw)
-  svg.rect x: 128, y: 0, width: 128, height: 128 if config[:corners].include?(:ne)
-  svg.rect x: 128, y: 128, width: 128, height: 128 if config[:corners].include?(:se)
-  svg.rect x: 0, y: 128, width: 128, height: 128 if config[:corners].include?(:sw)
+def range_corners(svg, range)
+  svg.rect x: 0, y: 0, width: 128, height: 128 if range[:corners].include?(:nw)
+  svg.rect x: 128, y: 0, width: 128, height: 128 if range[:corners].include?(:ne)
+  svg.rect x: 128, y: 128, width: 128, height: 128 if range[:corners].include?(:se)
+  svg.rect x: 0, y: 128, width: 128, height: 128 if range[:corners].include?(:sw)
 end
 
 def range_shapes(prefix)
-  RANGES.each do |config|
+  RANGES.each do |range|
     svg = Victor::SVG.new viewBox: "0 0 256 256", template: :html
     svg.build do
-      range_corners(svg, config)
+      range_corners(svg, range)
 
-      yield(svg, config)
+      yield(svg, range)
     end
-    svg.save "output/#{prefix}_#{config[:color]}"
+    svg.save "output/#{prefix}_#{range[:color]}"
   end
 end
 
 def range_circles(prefix)
-  range_shapes(prefix) do |svg, config|
-    svg.circle cx: 128, cy: 128, r: 124, fill: config[:background], stroke: "black", stroke_width: 8
+  range_shapes(prefix) do |svg, range|
+    svg.circle cx: 128, cy: 128, r: 124, fill: range[:background], stroke: "black", stroke_width: 8
 
-    yield(svg, config)
+    yield(svg, range)
   end
 end
 
 def range_squares(prefix)
-  range_shapes(prefix) do |svg, config|
-    svg.rect x: 7, y: 7, width: 242, height: 242, rx: 64, fill: config[:background], stroke: "black", stroke_width: 14
+  range_shapes(prefix) do |svg, range|
+    svg.rect x: 7, y: 7, width: 242, height: 242, rx: 64, fill: range[:background], stroke: "black", stroke_width: 14
 
-    yield(svg, config)
+    yield(svg, range)
   end
 end
 
@@ -99,10 +99,10 @@ def quick_action_icon(name)
   svg.save "output/quick_action_#{name}"
 end
 
-def awareness_symbol(config, svg)
-  svg.ellipse cx: 128, cy: 128, rx: 108, ry: 60, fill: config[:foreground]
-  svg.circle cx: 128, cy: 128, r: 44, fill: config[:background]
-  svg.circle cx: 128, cy: 128, r: 12, fill: config[:foreground]
+def awareness_symbol(svg, range)
+  svg.ellipse cx: 128, cy: 128, rx: 108, ry: 60, fill: range[:foreground]
+  svg.circle cx: 128, cy: 128, r: 44, fill: range[:background]
+  svg.circle cx: 128, cy: 128, r: 12, fill: range[:foreground]
 end
 
 def move_symbol(svg, fill)
@@ -133,7 +133,7 @@ task :generate_svgs do
 
   quick_action_icon("prepare") do |svg|
     svg.g transform: "scale(0.8) translate(32,32)" do
-      awareness_symbol({background: "white", foreground: "black"}, svg)
+      awareness_symbol(svg, {background: "white", foreground: "black"})
     end
   end
 
@@ -166,32 +166,32 @@ task :generate_svgs do
     svg.circle cx: "196", cy: "148", r: "4", fill: "white"
   end
 
-  range_circles("awareness") do |svg, config|
-    awareness_symbol(config, svg)
+  range_circles("awareness") do |svg, range|
+    awareness_symbol(svg, range)
   end
 
-  range_circles("presence") do |svg, config|
+  range_circles("presence") do |svg, range|
     # Concentric Circles
-    svg.circle cx: 128, cy: 128, r: 60, fill_opacity: 0, stroke: config[:foreground], stroke_width: 16
-    svg.circle cx: 128, cy: 128, r: 96, fill_opacity: 0, stroke: config[:foreground], stroke_width: 16
+    svg.circle cx: 128, cy: 128, r: 60, fill_opacity: 0, stroke: range[:foreground], stroke_width: 16
+    svg.circle cx: 128, cy: 128, r: 96, fill_opacity: 0, stroke: range[:foreground], stroke_width: 16
 
     # "Erase" top/bottom of concentric circles
-    svg.polygon points: "128 128 48 48 128 16 208 48", fill: config[:background]
-    svg.polygon points: "128 128 48 208 128 240 208 208", fill: config[:background]
+    svg.polygon points: "128 128 48 48 128 16 208 48", fill: range[:background]
+    svg.polygon points: "128 128 48 208 128 240 208 208", fill: range[:background]
 
     # Top of Tower
-    svg.circle cx: 128, cy: 128, r: 20, fill: config[:foreground]
+    svg.circle cx: 128, cy: 128, r: 20, fill: range[:foreground]
 
     # Tower
-    svg.polygon points: "116 236 124 160 132 160 140 236", fill: config[:foreground]
+    svg.polygon points: "116 236 124 160 132 160 140 236", fill: range[:foreground]
   end
 
-  range_squares("move") do |svg, config|
-    move_symbol(svg, config[:foreground])
+  range_squares("move") do |svg, range|
+    move_symbol(svg, range[:foreground])
   end
 
-  range_squares("charge") do |svg, config|
-    charge_symbol(svg, config[:foreground])
+  range_squares("charge") do |svg, range|
+    charge_symbol(svg, range[:foreground])
   end
 end
 
