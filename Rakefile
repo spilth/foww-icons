@@ -105,11 +105,30 @@ def awareness_symbol(config, svg)
   svg.circle cx: 128, cy: 128, r: 12, fill: config[:foreground]
 end
 
+def move_symbol(svg, fill)
+  svg.polygon points: "96 64 160 128 96 192", fill: fill
+end
+
+def charge_symbol(svg, fill)
+  svg.polygon points: "64 64 128 128 64 192", fill: fill
+  svg.polygon points: "128 64 192 128 128 192", fill: fill
+end
+
 task :generate_svgs do
   begin
     Dir.mkdir("output")
   rescue Errno::EEXIST
     # Ignored
+  end
+
+  quick_action_icon("movement") do |svg|
+    svg.g transform: "scale(0.5) translate(32,128)" do
+      move_symbol(svg, "black")
+    end
+    svg.g transform: "scale(0.5) translate(224,128)" do
+      charge_symbol(svg, "black")
+    end
+    svg.line x1: 128, y1: 0, x2: 128, y2: 256, stroke: "black", stroke_width: 8
   end
 
   quick_action_icon("prepare") do |svg|
@@ -168,12 +187,11 @@ task :generate_svgs do
   end
 
   range_squares("move") do |svg, config|
-    svg.polygon points: "96 64 160 128 96 192", fill: config[:foreground]
+    move_symbol(svg, config[:foreground])
   end
 
   range_squares("charge") do |svg, config|
-    svg.polygon points: "64 64 128 128 64 192", fill: config[:foreground]
-    svg.polygon points: "128 64 192 128 128 192", fill: config[:foreground]
+    charge_symbol(svg, config[:foreground])
   end
 end
 
