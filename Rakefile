@@ -1,5 +1,8 @@
 require "standard/rake"
 require "victor"
+require "zip"
+
+VIEW_BOX = "0 0 256 256"
 
 RANGES = [
   {
@@ -47,20 +50,20 @@ def range_corners(svg, range)
   svg.rect x: 0, y: 128, width: 128, height: 128 if range[:corners].include?(:sw)
 end
 
-def range_shapes(prefix)
+def range_frames(prefix)
   RANGES.each do |range|
-    svg = Victor::SVG.new viewBox: "0 0 256 256", template: :html
+    svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
     svg.build do
       range_corners(svg, range)
 
       yield(svg, range)
     end
-    svg.save "output/#{prefix}_#{range[:color]}"
+    svg.save "output/svg/#{prefix}_#{range[:color]}"
   end
 end
 
 def range_circles(prefix)
-  range_shapes(prefix) do |svg, range|
+  range_frames(prefix) do |svg, range|
     svg.circle cx: 128, cy: 128, r: 124, fill: range[:background], stroke: "black", stroke_width: 8
 
     yield(svg, range)
@@ -68,7 +71,7 @@ def range_circles(prefix)
 end
 
 def range_squares(prefix)
-  range_shapes(prefix) do |svg, range|
+  range_frames(prefix) do |svg, range|
     svg.rect x: 7, y: 7, width: 242, height: 242, rx: 64, fill: range[:background], stroke: "black", stroke_width: 14
 
     yield(svg, range)
@@ -76,17 +79,17 @@ def range_squares(prefix)
 end
 
 def skill_icon(name)
-  svg = Victor::SVG.new viewBox: "0 0 256 256", template: :html
+  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
   svg.build do
     svg.circle cx: 128, cy: 128, r: 124, fill: "white", stroke: "black", stroke_width: 8
 
     yield(svg)
   end
-  svg.save "output/skill_#{name}"
+  svg.save "output/svg/skill_#{name}"
 end
 
 def quick_action_icon(name)
-  svg = Victor::SVG.new viewBox: "0 0 256 256", template: :html
+  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
   svg.build do
     svg.line x1: "128", y1: "0", x2: "128", y2: "256", stroke: "black", stroke_width: "48"
     svg.line x1: "0", y1: "128", x2: "256", y2: "128", stroke: "black", stroke_width: "48"
@@ -96,7 +99,7 @@ def quick_action_icon(name)
 
     yield(svg)
   end
-  svg.save "output/quick_action_#{name}"
+  svg.save "output/svg/quick_action_#{name}"
 end
 
 def awareness_symbol(svg, range)
@@ -114,27 +117,45 @@ def charge_symbol(svg, fill)
   svg.polygon points: "128 64 192 128 128 192", fill: fill
 end
 
-task :generate_svgs do
+def presence_symbol(svg, foreground, background)
+  # Concentric Circles
+  svg.circle cx: 128, cy: 128, r: 60, fill_opacity: 0, stroke: foreground, stroke_width: 16
+  svg.circle cx: 128, cy: 128, r: 96, fill_opacity: 0, stroke: foreground, stroke_width: 16
+
+  # "Erase" top/bottom of concentric circles
+  svg.polygon points: "128 128 48 48 128 16 208 48", fill: background
+  svg.polygon points: "128 128 48 208 128 240 208 208", fill: background
+
+  # Top of Tower
+  svg.circle cx: 128, cy: 128, r: 20, fill: foreground
+
+  # Tower
+  svg.polygon points: "116 236 124 160 132 160 140 236", fill: foreground
+end
+
+task :svg do
   begin
     Dir.mkdir("output")
   rescue Errno::EEXIST
     # Ignored
   end
 
-  quick_action_icon("movement") do |svg|
-    svg.g transform: "scale(0.5) translate(32,128)" do
-      move_symbol(svg, "black")
-    end
-    svg.g transform: "scale(0.5) translate(224,128)" do
-      charge_symbol(svg, "black")
-    end
-    svg.line x1: 128, y1: 0, x2: 128, y2: 256, stroke: "black", stroke_width: 8
+  begin
+    Dir.mkdir("output/svg")
+  rescue Errno::EEXIST
+    # Ignored
   end
 
-  quick_action_icon("prepare") do |svg|
-    svg.g transform: "scale(0.8) translate(32,32)" do
-      awareness_symbol(svg, {background: "white", foreground: "black"})
-    end
+  puts "Creating SVGs..."
+
+  quick_action_icon("movement") do |svg|
+    svg.line x1: 128, y1: 0, x2: 128, y2: 256, stroke: "black", stroke_width: 8
+    svg.g(transform: "scale(0.5) translate(32,128)") { move_symbol(svg, "black") }
+    svg.g(transform: "scale(0.5) translate(224,128)") { charge_symbol(svg, "black") }
+  end
+
+  quick_action_icon("attack") do |svg|
+    svg.polygon points: "129 61 144 88 175 59 168 103 200 88 177 124 204 151 169 153 185 200 144 170 125 220 112 166 71 199 90 153 58 151 84 130 48 120 95 109 68 59 124 97 129 61", fill: "black"
   end
 
   quick_action_icon("expertise") do |svg|
@@ -147,14 +168,10 @@ task :generate_svgs do
     end
   end
 
-  skill_icon("search") do |svg|
-    svg.circle cx: 160, cy: 96, r: 52, fill: "white", stroke: "black", stroke_width: 20
-    svg.line x1: 120, y1: 136, x2: 48, y2: 208, stroke: "black", stroke_width: 20
-  end
-
-  skill_icon("lockpick") do |svg|
-    svg.circle cx: 128, cy: 80, r: 40, fill: "black"
-    svg.polygon points: "128 64 160 216 96 216", fill: "black"
+  quick_action_icon("prepare") do |svg|
+    svg.g transform: "scale(0.8) translate(32,32)" do
+      awareness_symbol(svg, {background: "white", foreground: "black"})
+    end
   end
 
   skill_icon("computer") do |svg|
@@ -166,33 +183,69 @@ task :generate_svgs do
     svg.circle cx: "196", cy: "148", r: "4", fill: "white"
   end
 
+  skill_icon("lockpick") do |svg|
+    svg.circle cx: 128, cy: 80, r: 40, fill: "black"
+    svg.polygon points: "128 64 160 216 96 216", fill: "black"
+  end
+
+  skill_icon("search") do |svg|
+    svg.circle cx: 160, cy: 96, r: 52, fill: "white", stroke: "black", stroke_width: 20
+    svg.line x1: 120, y1: 136, x2: 48, y2: 208, stroke: "black", stroke_width: 20
+  end
+
+  skill_icon("presence") do |svg|
+    presence_symbol(svg, "black", "white")
+  end
+
   range_circles("awareness") do |svg, range|
     awareness_symbol(svg, range)
   end
 
   range_circles("presence") do |svg, range|
-    # Concentric Circles
-    svg.circle cx: 128, cy: 128, r: 60, fill_opacity: 0, stroke: range[:foreground], stroke_width: 16
-    svg.circle cx: 128, cy: 128, r: 96, fill_opacity: 0, stroke: range[:foreground], stroke_width: 16
+    foreground = range[:foreground]
+    background = range[:background]
 
-    # "Erase" top/bottom of concentric circles
-    svg.polygon points: "128 128 48 48 128 16 208 48", fill: range[:background]
-    svg.polygon points: "128 128 48 208 128 240 208 208", fill: range[:background]
-
-    # Top of Tower
-    svg.circle cx: 128, cy: 128, r: 20, fill: range[:foreground]
-
-    # Tower
-    svg.polygon points: "116 236 124 160 132 160 140 236", fill: range[:foreground]
+    presence_symbol(svg, foreground, background)
   end
 
-  range_squares("move") do |svg, range|
-    move_symbol(svg, range[:foreground])
-  end
-
-  range_squares("charge") do |svg, range|
-    charge_symbol(svg, range[:foreground])
-  end
+  range_squares("move") { |svg, range| move_symbol(svg, range[:foreground]) }
+  range_squares("charge") { |svg, range| charge_symbol(svg, range[:foreground]) }
 end
 
-task default: ["standard:fix", :generate_svgs]
+task zip: :svg do
+  begin
+    Dir.mkdir("output/zip")
+  rescue Errno::EEXIST
+    # Ignored
+  end
+
+  begin
+    File.delete("output/zip/foww-icons.zip")
+  rescue Errno::ENOENT
+    # Ignored
+  end
+
+  puts "Creating Zip file of SVGs..."
+
+  source_files = Dir.glob("output/svg/*.svg")
+  Zip::File.open("output/zip/foww-icons.zip", create: true) do |zip|
+    source_files.each do |source_file|
+      puts "Adding #{source_file}..."
+      zip.add("foww-icons/#{File.basename(source_file)}", source_file)
+    end
+  end
+
+  puts "Done!"
+  puts
+end
+
+task html: :zip do
+  puts "Generating HTML..."
+
+  FileUtils.copy("html/index.html", "output/index.html")
+
+  puts "Done!"
+  puts
+end
+
+task default: ["standard:fix", :html]

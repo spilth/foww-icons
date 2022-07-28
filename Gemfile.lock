@@ -25,6 +25,7 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
+    rubyzip (2.3.2)
     standard (1.14.0)
       rubocop (= 1.32.0)
       rubocop-performance (= 1.14.3)
@@ -35,6 +36,7 @@ PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
+  rubyzip
   standard
   victor (~> 0.3.4)
 
