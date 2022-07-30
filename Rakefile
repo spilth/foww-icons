@@ -197,6 +197,17 @@ task :svg do
     presence_symbol(svg, "black", "white")
   end
 
+  skill_icon("heavy_weapon") do |svg|
+    svg.g transform: "rotate(-45 128 128)" do
+      svg.ellipse cx: 128, cy: 112, rx: 60, ry: 80, fill: "black"
+      svg.polygon points: "128 128 184 184 72 184", fill: "black"
+      svg.rect x: 72, y: 184, width: 112, height: 20
+      svg.rect x: 72, y: 184, width: 16, height: 40
+      svg.rect x: 168, y: 184, width: 16, height: 40
+      svg.rect x: 104, y: 184, width: 48, height: 40
+    end
+  end
+
   range_circles("awareness") do |svg, range|
     awareness_symbol(svg, range)
   end
