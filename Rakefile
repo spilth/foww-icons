@@ -298,4 +298,8 @@ task html: :zip do
   puts
 end
 
+task :deploy do
+  system "netlify deploy --prod --dir output"
+end
+
 task default: ["standard:fix", :html]
