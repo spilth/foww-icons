@@ -117,6 +117,36 @@ def charge_symbol(svg, fill)
   svg.polygon points: "128 64 192 128 128 192", fill: fill
 end
 
+def computer_symbol(svg)
+  svg.rect x: "56", y: "48", width: "144", height: "104", fill: "white", stroke: "black", stroke_width: "12"
+  svg.rect x: "54", y: "168", width: "148", height: "40", fill: "white", stroke: "black", stroke_width: "8"
+  svg.rect x: "62", y: "176", width: "132", height: "32", fill: "black"
+  svg.path d: "M 72 48 C 56 48, 56 152, 72 152", fill: "none", stroke: "black", stroke_width: "8"
+  svg.path d: "M 184 48 C 200 48, 200 152, 184 152", fill: "none", stroke: "black", stroke_width: "8"
+  svg.circle cx: "196", cy: "148", r: "4", fill: "white"
+end
+
+def lockpick_symbol(svg)
+  svg.circle cx: 128, cy: 80, r: 40, fill: "black"
+  svg.polygon points: "128 64 160 216 96 216", fill: "black"
+end
+
+def search_symbol(svg)
+  svg.circle cx: 160, cy: 96, r: 52, fill: "white", stroke: "black", stroke_width: 20
+  svg.line x1: 120, y1: 136, x2: 48, y2: 208, stroke: "black", stroke_width: 20
+end
+
+def heavy_weapon_symbol(svg)
+  svg.g transform: "rotate(-45 128 128)" do
+    svg.ellipse cx: 128, cy: 112, rx: 60, ry: 80, fill: "black"
+    svg.polygon points: "128 128 184 184 72 184", fill: "black"
+    svg.rect x: 72, y: 184, width: 112, height: 20
+    svg.rect x: 72, y: 184, width: 16, height: 40
+    svg.rect x: 168, y: 184, width: 16, height: 40
+    svg.rect x: 104, y: 184, width: 48, height: 40
+  end
+end
+
 def presence_symbol(svg, foreground, background)
   # Concentric Circles
   svg.circle cx: 128, cy: 128, r: 60, fill_opacity: 0, stroke: foreground, stroke_width: 16
@@ -174,23 +204,40 @@ task :svg do
     end
   end
 
+  quick_action_icon("computers") do |svg|
+    svg.g transform: "scale(0.8) translate(32,32)" do
+      computer_symbol(svg)
+    end
+  end
+
+  quick_action_icon("heavy_weapon") do |svg|
+    svg.g transform: "scale(0.8) translate(32,32)" do
+      heavy_weapon_symbol(svg)
+    end
+  end
+
+  quick_action_icon("lockpick") do |svg|
+    svg.g transform: "scale(0.8) translate(32,32)" do
+      lockpick_symbol(svg)
+    end
+  end
+
+  quick_action_icon("search") do |svg|
+    svg.g transform: "scale(0.8) translate(32,32)" do
+      search_symbol(svg)
+    end
+  end
+
   skill_icon("computer") do |svg|
-    svg.rect x: "56", y: "48", width: "144", height: "104", fill: "white", stroke: "black", stroke_width: "12"
-    svg.rect x: "54", y: "168", width: "148", height: "40", fill: "white", stroke: "black", stroke_width: "8"
-    svg.rect x: "62", y: "176", width: "132", height: "32", fill: "black"
-    svg.path d: "M 72 48 C 56 48, 56 152, 72 152", fill: "none", stroke: "black", stroke_width: "8"
-    svg.path d: "M 184 48 C 200 48, 200 152, 184 152", fill: "none", stroke: "black", stroke_width: "8"
-    svg.circle cx: "196", cy: "148", r: "4", fill: "white"
+    computer_symbol(svg)
   end
 
   skill_icon("lockpick") do |svg|
-    svg.circle cx: 128, cy: 80, r: 40, fill: "black"
-    svg.polygon points: "128 64 160 216 96 216", fill: "black"
+    lockpick_symbol(svg)
   end
 
   skill_icon("search") do |svg|
-    svg.circle cx: 160, cy: 96, r: 52, fill: "white", stroke: "black", stroke_width: 20
-    svg.line x1: 120, y1: 136, x2: 48, y2: 208, stroke: "black", stroke_width: 20
+    search_symbol(svg)
   end
 
   skill_icon("presence") do |svg|
@@ -199,12 +246,7 @@ task :svg do
 
   skill_icon("heavy_weapon") do |svg|
     svg.g transform: "rotate(-45 128 128)" do
-      svg.ellipse cx: 128, cy: 112, rx: 60, ry: 80, fill: "black"
-      svg.polygon points: "128 128 184 184 72 184", fill: "black"
-      svg.rect x: 72, y: 184, width: 112, height: 20
-      svg.rect x: 72, y: 184, width: 16, height: 40
-      svg.rect x: 168, y: 184, width: 16, height: 40
-      svg.rect x: 104, y: 184, width: 48, height: 40
+      heavy_weapon_symbol(svg)
     end
   end
 
