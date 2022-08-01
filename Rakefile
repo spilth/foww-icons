@@ -119,10 +119,9 @@ end
 
 def computer_symbol(svg)
   svg.rect x: "56", y: "48", width: "144", height: "104", fill: "white", stroke: "black", stroke_width: "12"
+  svg.rect x: "56", y: "48", rx: 20, ry: 60, width: "144", height: "104", fill: "white", stroke: "black", stroke_width: "12"
   svg.rect x: "54", y: "168", width: "148", height: "40", fill: "white", stroke: "black", stroke_width: "8"
   svg.rect x: "62", y: "176", width: "132", height: "32", fill: "black"
-  svg.path d: "M 72 48 C 56 48, 56 152, 72 152", fill: "none", stroke: "black", stroke_width: "8"
-  svg.path d: "M 184 48 C 200 48, 200 152, 184 152", fill: "none", stroke: "black", stroke_width: "8"
   svg.circle cx: "196", cy: "148", r: "4", fill: "white"
 end
 
