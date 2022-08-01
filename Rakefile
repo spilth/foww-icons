@@ -245,9 +245,7 @@ task :svg do
   end
 
   skill_icon("heavy_weapon") do |svg|
-    svg.g transform: "rotate(-45 128 128)" do
-      heavy_weapon_symbol(svg)
-    end
+    heavy_weapon_symbol(svg)
   end
 
   range_circles("awareness") do |svg, range|
