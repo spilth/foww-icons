@@ -117,6 +117,12 @@ def charge_symbol(svg, fill)
   svg.polygon points: "128 64 192 128 128 192", fill: fill
 end
 
+def melee_symbol(svg)
+  svg.g transform: "translate(-16 0)" do
+    svg.path d: "M95 89c-1-2-19-45-3-53 5-3-3 24 31 35l37 62 15-9h4c1 2 1 4-1 5l-18 12c0 2 1 5 3 7 31 24 40 60 40 60s16 2 10 7l-10 9-12 5c-8 4-3-11-3-11s-29-24-39-61c0-3-3-5-5-6l-19 12h-4c-1-2-1-4 1-5l15-10-42-59Z"
+  end
+end
+
 def pistol_symbol(svg)
   svg.path fill: "none", stroke: "black", stroke_width: "6", d: "M100 110c-2 7-2 46 56 30"
   svg.path fill: "none", stroke: "black", stroke_width: "6", d: "M130 111c2 8 3 13-1 23"
@@ -124,9 +130,11 @@ def pistol_symbol(svg)
 end
 
 def rifle_symbol(svg)
-  svg.path d: "m17 40 3 17 27 14 9-8 76 29 7 8 73 35 3 12 11 3 53 33-22 28-51-52-1 31-17-1-1-30-14-16-6-2-42-23-10-2L7 57l10-17Z"
-  svg.path fill: "none", stroke: "black", stroke_width: "20", d: "M101 167c44-15 46-24 57-39"
-  svg.path fill: "white", d: "m57 70 16 6v6l-18-7 2-5Z"
+  svg.g transform: "translate(-16 0)" do
+    svg.path d: "m17 40 3 17 27 14 9-8 76 29 7 8 73 35 3 12 11 3 53 33-22 28-51-52-1 31-17-1-1-30-14-16-6-2-42-23-10-2L7 57l10-17Z"
+    svg.path fill: "none", stroke: "black", stroke_width: "20", d: "M101 167c44-15 46-24 57-39"
+    svg.path fill: "white", d: "m57 70 16 6v6l-18-7 2-5Z"
+  end
 end
 
 def computer_symbol(svg)
@@ -215,6 +223,12 @@ task :svg do
     end
   end
 
+  quick_action_icon("melee") do |svg|
+    svg.g transform: "scale(0.8) translate(32,32)" do
+      melee_symbol(svg)
+    end
+  end
+
   quick_action_icon("pistol") do |svg|
     svg.g transform: "scale(0.8) translate(32,32)" do
       pistol_symbol(svg)
@@ -249,6 +263,10 @@ task :svg do
     svg.g transform: "scale(0.8) translate(32,32)" do
       search_symbol(svg)
     end
+  end
+
+  skill_icon("melee") do |svg|
+    melee_symbol(svg)
   end
 
   skill_icon("pistol") do |svg|
