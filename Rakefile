@@ -2,7 +2,7 @@ require "standard/rake"
 require "victor"
 require "zip"
 
-VIEW_BOX = "0 0 256 256"
+VIEW_BOX = "-16 0 288 256"
 
 RANGES = [
   {
@@ -117,6 +117,18 @@ def charge_symbol(svg, fill)
   svg.polygon points: "128 64 192 128 128 192", fill: fill
 end
 
+def pistol_symbol(svg)
+  svg.path fill: "none", stroke: "black", stroke_width: "6", d: "M100 110c-2 7-2 46 56 30"
+  svg.path fill: "none", stroke: "black", stroke_width: "6", d: "M130 111c2 8 3 13-1 23"
+  svg.path d: "M41 77h162l12 35-20 20 20 58-48 9-24-85H58l-5-13-12-3V77Z"
+end
+
+def rifle_symbol(svg)
+  svg.path d: "m17 40 3 17 27 14 9-8 76 29 7 8 73 35 3 12 11 3 53 33-22 28-51-52-1 31-17-1-1-30-14-16-6-2-42-23-10-2L7 57l10-17Z"
+  svg.path fill: "none", stroke: "black", stroke_width: "20", d: "M101 167c44-15 46-24 57-39"
+  svg.path fill: "white", d: "m57 70 16 6v6l-18-7 2-5Z"
+end
+
 def computer_symbol(svg)
   svg.rect x: "56", y: "48", width: "144", height: "104", fill: "white", stroke: "black", stroke_width: "12"
   svg.rect x: "56", y: "48", rx: 20, ry: 60, width: "144", height: "104", fill: "white", stroke: "black", stroke_width: "12"
@@ -203,9 +215,21 @@ task :svg do
     end
   end
 
+  quick_action_icon("pistol") do |svg|
+    svg.g transform: "scale(0.8) translate(32,32)" do
+      pistol_symbol(svg)
+    end
+  end
+
   quick_action_icon("computers") do |svg|
     svg.g transform: "scale(0.8) translate(32,32)" do
       computer_symbol(svg)
+    end
+  end
+
+  quick_action_icon("rifle") do |svg|
+    svg.g transform: "scale(0.8) translate(32,32)" do
+      rifle_symbol(svg)
     end
   end
 
@@ -225,6 +249,14 @@ task :svg do
     svg.g transform: "scale(0.8) translate(32,32)" do
       search_symbol(svg)
     end
+  end
+
+  skill_icon("pistol") do |svg|
+    pistol_symbol(svg)
+  end
+
+  skill_icon("rifle") do |svg|
+    rifle_symbol(svg)
   end
 
   skill_icon("computer") do |svg|
