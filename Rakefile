@@ -166,6 +166,20 @@ def heavy_weapon_symbol(svg)
   end
 end
 
+def throw_symbol(svg, foreground)
+  svg.g transform: "translate(-16 0)" do
+    svg.ellipse cx: "76", cy: "87", fill: "none", stroke: foreground, stroke_width: "10", rx: "28", ry: "27"
+    svg.path fill: foreground, d: "m127 83-2 16h60l-7-37h13l-1-16s1-5-5-5h-59L95 67l9 16m-17-7s-20 37-19 92c0 3 10 10 13 0 0-15-2-65 21-71L87 76Zm91 105c-2 11-5 19-9 26-2 5-5 8-8 10a53 53 0 0 1-12 0c-3-2-6-5-9-10l-9-26h47Zm-55 0a99 99 0 0 0 12 33c-14-6-26-18-34-33h22Zm63 0h21c-7 15-18 26-32 32l1-2c4-7 8-18 10-30Zm-65-37a178 178 0 0 0 1 29H98a77 77 0 0 1-4-29h27Zm60 0a170 170 0 0 1-2 29h-49a162 162 0 0 1-1-29h52Zm8 0h25a79 79 0 0 1-4 29h-22a170 170 0 0 0 1-29Zm-62-37c-3 9-5 19-6 30H95c2-11 6-22 12-30h20Zm47 0c3 8 5 19 6 30h-51c1-11 3-22 6-30h39Zm9 0h18c6 8 10 19 12 30h-25l-5-30Z"
+  end
+end
+
+def battle_cry_symbol(svg, foreground)
+  svg.g transform: "translate(-16 0)" do
+    svg.path d: "m125 26 26 22-22 28-27-15 23-35Zm34 27 18 16-24 31v-8l-17-12 23-27Zm24 21 22 18-39 45-22-12 39-51Zm29 24 19 17-44 37-13-10 38-44Z", fill: foreground
+    svg.path d: "M143 92 93 68l-41 57 60 101h72s20 0 35-91c-28 22-36 30-36 30s-19-30-80-39c-9-1-1-20 8-20 20 0 34 3 32-14Z", fill: foreground
+  end
+end
+
 def health_symbol(svg)
   svg.g transform: "translate(-16 0)" do
     svg.path fill: "black", d: "M144 222c-36-77-100-38-100-109 0-34 32-47 48-47 18 0 36 11 52 30 16-19 34-30 52-30 16 0 48 13 48 47 0 71-64 32-100 109Z"
@@ -259,6 +273,12 @@ task :svg do
     end
   end
 
+  quick_action_icon("throw") do |svg|
+    svg.g transform: "scale(0.8) translate(32,32)" do
+      throw_symbol(svg, "black")
+    end
+  end
+
   quick_action_icon("lockpick") do |svg|
     svg.g transform: "scale(0.8) translate(32,32)" do
       lockpick_symbol(svg)
@@ -283,6 +303,14 @@ task :svg do
     rifle_symbol(svg)
   end
 
+  skill_icon("heavy_weapon") do |svg|
+    heavy_weapon_symbol(svg)
+  end
+
+  skill_icon("throw") do |svg|
+    throw_symbol(svg, "black")
+  end
+
   skill_icon("computer") do |svg|
     computer_symbol(svg)
   end
@@ -299,8 +327,8 @@ task :svg do
     presence_symbol(svg, "black", "white")
   end
 
-  skill_icon("heavy_weapon") do |svg|
-    heavy_weapon_symbol(svg)
+  skill_icon("battle_cry") do |svg|
+    battle_cry_symbol(svg, "black")
   end
 
   skill_icon("health") do |svg|
@@ -316,6 +344,14 @@ task :svg do
     background = range[:background]
 
     presence_symbol(svg, foreground, background)
+  end
+
+  range_circles("battle_cry") do |svg, range|
+    battle_cry_symbol(svg, range[:foreground])
+  end
+
+  range_circles("throw") do |svg, range|
+    throw_symbol(svg, range[:foreground])
   end
 
   range_squares("move") { |svg, range| move_symbol(svg, range[:foreground]) }
