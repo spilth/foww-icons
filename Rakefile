@@ -166,6 +166,12 @@ def heavy_weapon_symbol(svg)
   end
 end
 
+def health_symbol(svg)
+  svg.g transform: "translate(-16 0)" do
+    svg.path fill: "black", d: "M144 222c-36-77-100-38-100-109 0-34 32-47 48-47 18 0 36 11 52 30 16-19 34-30 52-30 16 0 48 13 48 47 0 71-64 32-100 109Z"
+  end
+end
+
 def presence_symbol(svg, foreground, background)
   # Concentric Circles
   svg.circle cx: 128, cy: 128, r: 60, fill_opacity: 0, stroke: foreground, stroke_width: 16
@@ -295,6 +301,10 @@ task :svg do
 
   skill_icon("heavy_weapon") do |svg|
     heavy_weapon_symbol(svg)
+  end
+
+  skill_icon("health") do |svg|
+    health_symbol(svg)
   end
 
   range_circles("awareness") do |svg, range|
