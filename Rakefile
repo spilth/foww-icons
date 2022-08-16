@@ -327,7 +327,7 @@ task :svg do
     presence_symbol(svg, "black", "white")
   end
 
-  skill_icon("battle_cry") do |svg|
+  skill_icon("resist_battle_cry") do |svg|
     battle_cry_symbol(svg, "black")
   end
 
