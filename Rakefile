@@ -78,6 +78,19 @@ def range_squares(prefix)
   end
 end
 
+def skill_icon_slashed(name)
+  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
+  svg.build do
+    svg.circle cx: 128, cy: 128, r: 128, fill: "white"
+
+    yield(svg)
+
+    svg.line x1: 40, y1: 216, x2: 216, y2: 40, stroke: "#E4091C", stroke_width: 36
+    svg.circle cx: 128, cy: 128, r: 124, fill: "none", stroke: "black", stroke_width: 8
+  end
+  svg.save "output/svg/skill_#{name}"
+end
+
 def skill_icon(name)
   svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
   svg.build do
@@ -328,6 +341,10 @@ task :svg do
   end
 
   skill_icon("resist_battle_cry") do |svg|
+    battle_cry_symbol(svg, "black")
+  end
+
+  skill_icon_slashed("battle_cry_immunity") do |svg|
     battle_cry_symbol(svg, "black")
   end
 
