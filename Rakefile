@@ -101,6 +101,24 @@ def skill_icon(name)
   svg.save "output/svg/skill_#{name}"
 end
 
+def armor_icon(name)
+  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
+  svg.build do
+    helmet_symbol(svg)
+
+    yield(svg)
+  end
+  svg.save "output/svg/armor_#{name}"
+end
+
+def damage_icon(name)
+  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
+  svg.build do
+    yield(svg)
+  end
+  svg.save "output/svg/damage_#{name}"
+end
+
 def quick_action_icon(name)
   svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
   svg.build do
@@ -215,6 +233,36 @@ def presence_symbol(svg, foreground, background)
   svg.polygon points: "116 236 124 160 132 160 140 236", fill: foreground
 end
 
+def damage_symbol(svg)
+  svg.path d: "m133 3 24 43 49-46-11 70 51-24-37 57 43 43-56 3 26 75-65-48-31 80-20-86-65 53 30-74-51-3 41-33L4 97l75-17L36 0l89 60 8-57Z"
+end
+
+def physical_symbol(svg)
+  svg.path fill: "#fff", d: "M29 8h198v168c0 21-41 72-99 72s-99-52-99-72V8Z"
+  svg.path d: "M29 0c-4 0-8 4-8 8v169c0 6 4 17 12 28 17 24 51 51 95 51s78-27 95-50c8-12 12-22 12-29V8c0-4-4-8-8-8H29Zm8 16h182v161c0 6-6 17-16 28-16 18-43 35-75 35s-59-18-75-35c-10-11-16-22-16-28V16Z"
+  svg.path stroke: "#000", stroke_width: "12", d: "M128 8h99v116h-99zM29 124h99v122c-65-7-99-70-99-70v-52Z"
+end
+
+def energy_symbol(svg)
+  svg.path d: "M91 0h93l-53 97h76L98 256l14-106H50L91 0Z"
+end
+
+def radiation_symbol(svg)
+  svg.mask id: "mask" do
+    svg.path d: "M128 128 L 0 128 L 0 0 L 54 0", fill: "white"
+    svg.path d: "M128 128 L 256 128 L 256 0 L 202 0", fill: "white"
+    svg.path d: "M128 128 L 54 256 L 202 256", fill: "white"
+    svg.circle cx: "128", cy: "128", r: "32", fill: "black"
+  end
+
+  svg.circle cx: "128", cy: "128", r: "128", fill: "black", mask: "url(#mask)"
+  svg.circle cx: "128", cy: "128", r: "16", fill: "black"
+end
+
+def helmet_symbol(svg)
+  svg.path fill: "white", stroke: "black", stroke_width: 8, d: "M13 159c3-12 22-18 27-34 10-37 23-72 60-72h65c18 0 62 30 57 75-5 44 24 39 22 52-2 19-42 30-69 31-70 1-41-42-101-41-64 0-63-4-61-11Z"
+end
+
 task :svg do
   begin
     Dir.mkdir("output")
@@ -237,7 +285,9 @@ task :svg do
   end
 
   quick_action_icon("attack") do |svg|
-    svg.polygon points: "129 61 144 88 175 59 168 103 200 88 177 124 204 151 169 153 185 200 144 170 125 220 112 166 71 199 90 153 58 151 84 130 48 120 95 109 68 59 124 97 129 61", fill: "black"
+    svg.g transform: "scale(0.64) translate(76 88)" do
+      damage_symbol(svg)
+    end
   end
 
   quick_action_icon("expertise") do |svg|
@@ -350,6 +400,40 @@ task :svg do
 
   skill_icon("health") do |svg|
     health_symbol(svg)
+  end
+
+  armor_icon("physical") do |svg|
+    svg.g transform: "translate(74 64) scale(0.43)" do
+      physical_symbol(svg)
+    end
+  end
+
+  armor_icon("energy") do |svg|
+    svg.g transform: "translate(74 60) scale(0.45)" do
+      energy_symbol(svg)
+    end
+  end
+
+  armor_icon("radiation") do |svg|
+    svg.g transform: "translate(72 50) scale(0.49)" do
+      radiation_symbol(svg)
+    end
+  end
+
+  damage_icon("damage") do |svg|
+    damage_symbol(svg)
+  end
+
+  damage_icon("physical") do |svg|
+    physical_symbol(svg)
+  end
+
+  damage_icon("energy") do |svg|
+    energy_symbol(svg)
+  end
+
+  damage_icon("radiation") do |svg|
+    radiation_symbol(svg)
   end
 
   range_circles("awareness") do |svg, range|
