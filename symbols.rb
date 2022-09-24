@@ -100,10 +100,19 @@ def mountain_symbol(svg, foreground)
   end
 end
 
+def dog_symbol(svg, foreground)
+  svg.path d: "M47 169c1-9 35-59 49-83 2-18 17-58 36-59 5-1-2 33 5 33 26-4 12-22 32-22 5 9-14 44 64 69 26 11 2 37-29 46-10 3-42-7-50-3-8 3 25 40 18 78-49 19-109-14-125-59Z", fill: foreground
+end
+
 def health_symbol(svg)
   svg.g transform: "translate(-16 0)" do
     svg.path fill: "black", d: "M144 222c-36-77-100-38-100-109 0-34 32-47 48-47 18 0 36 11 52 30 16-19 34-30 52-30 16 0 48 13 48 47 0 71-64 32-100 109Z"
   end
+end
+
+def luck_symbol(svg)
+  svg.path d: "m68 248-21-12s16-68 76-93c61-25-42-5-55 105Z", fill: "#078f36", stroke: "black", stroke_width: 6
+  svg.path d: "M164 105c6 1 29-51 70-50 22-1 21 12 23 48 3 12 33 16 1 51-48 11-63-11-94-11 7 8 42 41 55 50 13 8 2 45-51 35-15 4-46 37-61-9-4-45 29-41 16-76-27-10-57 15-66 28-10 3-44 12-32-53 0-30 0-74 48-53 14 7 34 34 47 39-6-10-16-34-42-60-13-20 14-35 44-27 14-2 49-36 60 16 3 40 2 11-18 72Z", fill: "#078f36", stroke: "black", stroke_width: 6
 end
 
 def presence_symbol(svg, foreground, background)

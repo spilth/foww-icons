@@ -89,6 +89,18 @@ def slashed_icon(name)
   svg.save "output/svg/#{name}"
 end
 
+def ability_icon(name)
+  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
+  svg.build do
+    svg.circle cx: 128, cy: 128, r: 124, fill: "white", stroke: "black", stroke_width: 8
+
+    svg.g transform: "translate(-16 0)" do
+      yield(svg)
+    end
+  end
+  svg.save "output/svg/#{name}"
+end
+
 def skill_icon(name)
   svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
   svg.build do
@@ -115,6 +127,16 @@ def damage_icon(name)
     yield(svg)
   end
   svg.save "output/svg/damage_#{name}"
+end
+
+def icon(name)
+  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
+  svg.build do
+    svg.g transform: "translate(-16 0)" do
+      yield(svg)
+    end
+  end
+  svg.save "output/svg/#{name}"
 end
 
 def quick_action_icon(name)

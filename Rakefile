@@ -35,6 +35,9 @@ task :svg do
   skill_icon("resist_battle_cry") { |svg| battle_cry_symbol(svg, "black") }
   skill_icon("health") { |svg| health_symbol(svg) }
 
+  ability_icon("dog_handler") { |svg| dog_symbol(svg, "black") }
+  icon("luck") { |svg| luck_symbol(svg) }
+
   slashed_icon("battle_cry_immunity") { |svg| battle_cry_symbol(svg, "black") }
   slashed_icon("cannot_climb") { |svg| climb_symbol(svg, "black") }
   slashed_icon("unimpeded") { |svg| mountain_symbol(svg, "black") }
