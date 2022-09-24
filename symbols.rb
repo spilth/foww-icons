@@ -115,6 +115,13 @@ def luck_symbol(svg)
   svg.path d: "M164 105c6 1 29-51 70-50 22-1 21 12 23 48 3 12 33 16 1 51-48 11-63-11-94-11 7 8 42 41 55 50 13 8 2 45-51 35-15 4-46 37-61-9-4-45 29-41 16-76-27-10-57 15-66 28-10 3-44 12-32-53 0-30 0-74 48-53 14 7 34 34 47 39-6-10-16-34-42-60-13-20 14-35 44-27 14-2 49-36 60 16 3 40 2 11-18 72Z", fill: "#078f36", stroke: "black", stroke_width: 6
 end
 
+def critical_point_symbol(svg)
+  svg.rect x: 16, y: 16, width: 224, height: 224, fill: "#FDE64C", stroke: "black", stroke_width: 8
+  svg.polygon points: "96 36 160 36 144 192 112 192", fill: "black"
+  svg.circle cx: 128, cy: 192, r: 44, fill: "#FDE64C"
+  svg.circle cx: 128, cy: 192, r: 32, fill: "black"
+end
+
 def presence_symbol(svg, foreground, background)
   # Concentric Circles
   svg.circle cx: 128, cy: 128, r: 60, fill_opacity: 0, stroke: foreground, stroke_width: 16
