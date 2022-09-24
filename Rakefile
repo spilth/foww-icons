@@ -38,6 +38,7 @@ task :svg do
   ability_icon("dog_handler") { |svg| dog_symbol(svg, "black") }
   icon("luck") { |svg| luck_symbol(svg) }
   icon("critical_point") { |svg| critical_point_symbol(svg) }
+  icon("unique_unit") { |svg| unique_unit_symbol(svg) }
 
   slashed_icon("battle_cry_immunity") { |svg| battle_cry_symbol(svg, "black") }
   slashed_icon("cannot_climb") { |svg| climb_symbol(svg, "black") }

@@ -130,7 +130,7 @@ def damage_icon(name)
 end
 
 def icon(name)
-  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
+  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html, fill_rule: "evenodd"
   svg.build do
     svg.g transform: "translate(-16 0)" do
       yield(svg)
