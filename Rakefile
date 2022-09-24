@@ -35,12 +35,14 @@ task :svg do
   skill_icon("resist_battle_cry") { |svg| battle_cry_symbol(svg, "black") }
   skill_icon("health") { |svg| health_symbol(svg) }
 
-  skill_icon_slashed("battle_cry_immunity") { |svg| battle_cry_symbol(svg, "black") }
+  slashed_icon("battle_cry_immunity") { |svg| battle_cry_symbol(svg, "black") }
+  slashed_icon("cannot_climb") { |svg| climb_symbol(svg, "black") }
+  slashed_icon("unimpeded") { |svg| mountain_symbol(svg, "black") }
 
   quick_action_icon("movement") { |svg| movement_symbol(svg) }
   quick_action_icon("expertise") { |svg| svg.g(transform: "scale(0.8) translate(32,32)") { expertise_symbol(svg) } }
   quick_action_icon("attack") { |svg| svg.g(transform: "scale(0.64) translate(76 88)") { damage_symbol(svg) } }
-  quick_action_icon("prepare") { |svg| svg.g(transform: "scale(0.8) translate(32,32)") { awareness_symbol(svg, { background: "white", foreground: "black" }) } }
+  quick_action_icon("prepare") { |svg| svg.g(transform: "scale(0.8) translate(32,32)") { awareness_symbol(svg, {background: "white", foreground: "black"}) } }
   quick_action_icon("melee") { |svg| svg.g(transform: "scale(0.8) translate(32,32)") { melee_symbol(svg) } }
   quick_action_icon("pistol") { |svg| svg.g(transform: "scale(0.8) translate(32,32)") { pistol_symbol(svg) } }
   quick_action_icon("computers") { |svg| svg.g(transform: "scale(0.8) translate(32,32)") { computer_symbol(svg) } }

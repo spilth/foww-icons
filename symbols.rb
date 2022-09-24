@@ -82,6 +82,24 @@ def battle_cry_symbol(svg, foreground)
   end
 end
 
+def climb_symbol(svg, foreground)
+  svg.line x1: 96, y1: 32, x2: 96, y2: 224, stroke: foreground, stroke_width: 16, stroke_linecap: "round"
+  svg.line x1: 160, y1: 32, x2: 160, y2: 224, stroke: foreground, stroke_width: 16, stroke_linecap: "round"
+  svg.line x1: 96, y1: 64, x2: 160, y2: 64, stroke: foreground, stroke_width: 16
+  svg.line x1: 96, y1: 128, x2: 160, y2: 128, stroke: foreground, stroke_width: 16
+  svg.line x1: 96, y1: 192, x2: 160, y2: 192, stroke: foreground, stroke_width: 16
+end
+
+def mountain_symbol(svg, foreground)
+  svg.mask id: "mask" do
+    svg.circle cx: 144, cy: 128, r: 128, fill: "white"
+  end
+
+  svg.g transform: "translate(-16 0)" do
+    svg.path d: "m78 93 83 98 10-15-52-66 62-65 88 118v93H20v-96l58-67Z", mask: "url(#mask)", stroke: foreground, stroke_width: 8, stroke_linejoin: "round"
+  end
+end
+
 def health_symbol(svg)
   svg.g transform: "translate(-16 0)" do
     svg.path fill: "black", d: "M144 222c-36-77-100-38-100-109 0-34 32-47 48-47 18 0 36 11 52 30 16-19 34-30 52-30 16 0 48 13 48 47 0 71-64 32-100 109Z"

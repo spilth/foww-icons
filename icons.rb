@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 VIEW_BOX = "-16 0 288 256"
 
 RANGES = [
@@ -11,25 +13,25 @@ RANGES = [
     color: "yellow",
     background: "#FDE64C",
     foreground: "black",
-    corners: [:nw, :se]
+    corners: %i[nw se]
   },
   {
     color: "red",
     background: "#E73430",
     foreground: "black",
-    corners: [:ne, :se]
+    corners: %i[ne se]
   },
   {
     color: "green",
     background: "#00A143",
     foreground: "black",
-    corners: [:nw, :ne, :sw]
+    corners: %i[nw ne sw]
   },
   {
     color: "blue",
     background: "#009FE0",
     foreground: "black",
-    corners: [:nw, :ne, :se, :sw]
+    corners: %i[nw ne se sw]
   },
   {
     color: "black",
@@ -37,7 +39,7 @@ RANGES = [
     foreground: "white",
     corners: []
   }
-]
+].freeze
 
 def range_corners(svg, range)
   svg.rect x: 0, y: 0, width: 128, height: 128 if range[:corners].include?(:nw)
@@ -74,7 +76,7 @@ def range_squares(prefix)
   end
 end
 
-def skill_icon_slashed(name)
+def slashed_icon(name)
   svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
   svg.build do
     svg.circle cx: 128, cy: 128, r: 128, fill: "white"
@@ -84,7 +86,7 @@ def skill_icon_slashed(name)
     svg.line x1: 40, y1: 216, x2: 216, y2: 40, stroke: "#E4091C", stroke_width: 36
     svg.circle cx: 128, cy: 128, r: 124, fill: "none", stroke: "black", stroke_width: 8
   end
-  svg.save "output/svg/skill_#{name}"
+  svg.save "output/svg/#{name}"
 end
 
 def skill_icon(name)
