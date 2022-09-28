@@ -34,6 +34,7 @@ task :svg do
   skill_icon("presence") { |svg| presence_symbol(svg, "black", "white") }
   skill_icon("resist_battle_cry") { |svg| battle_cry_symbol(svg, "black") }
   skill_icon("health") { |svg| health_symbol(svg) }
+  skill_icon("expertise") { |svg| expertise_symbol(svg) }
 
   ability_icon("dog_handler") { |svg| dog_symbol(svg, "black") }
   icon("luck") { |svg| luck_symbol(svg) }
