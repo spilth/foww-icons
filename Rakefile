@@ -20,6 +20,11 @@ task :svg do
 
   puts "Creating SVGs..."
 
+  die_icon("damage_effect", "black") { |_| }
+  die_icon("special_effect", "#193F86") { |svg| svg.circle cx: 128, cy: 48, r: 21, fill: "white" }
+  die_icon("accuracy_effect", "#00A142") { |svg| svg.circle cx: 204, cy: 103, r: 21, fill: "white" }
+  die_icon("armor_reduction", "#FDE64D") { |svg| svg.circle cx: 52, cy: 103, r: 21, fill: "black" }
+
   range_squares("move") { |svg, range| move_symbol(svg, range[:foreground]) }
   range_squares("charge") { |svg, range| charge_symbol(svg, range[:foreground]) }
 

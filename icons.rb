@@ -139,6 +139,17 @@ def icon(name)
   svg.save "output/svg/#{name}"
 end
 
+def die_icon(name, fill)
+  svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html, fill_rule: "evenodd"
+  svg.build do
+    svg.polygon points: "128,4 246,90 201,228 55,228 10,90", fill: fill, stroke_width: 8, stroke: "black"
+
+    yield(svg)
+  end
+
+  svg.save "output/svg/die_#{name}"
+end
+
 def quick_action_icon(name)
   svg = Victor::SVG.new viewBox: VIEW_BOX, template: :html
   svg.build do
