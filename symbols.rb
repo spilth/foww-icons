@@ -13,6 +13,24 @@ def charge_symbol(svg, fill)
   svg.polygon points: "128 64 192 128 128 192", fill: fill
 end
 
+def aura_symbol(svg)
+  svg.mask id: "mask" do
+    svg.rect x: 0, y: 0, width: 256, height: 256, fill: "white"
+    svg.circle cx: 128, cy: 128, r: 56, fill: "black"
+  end
+
+  svg.g transform: "translate(0 48)", mask: "url(#mask)" do
+    svg.polygon points: "0 128 128 88 128 168"
+    svg.polygon points: "0 128 128 88 128 168", transform: "rotate(36, 128, 128)"
+    svg.polygon points: "0 128 128 88 128 168", transform: "rotate(72, 128, 128)"
+    svg.polygon points: "0 128 128 88 128 168", transform: "rotate(108, 128, 128)"
+    svg.polygon points: "0 128 128 88 128 168", transform: "rotate(144, 128, 128)"
+    svg.polygon points: "0 128 128 88 128 168", transform: "rotate(180, 128, 128)"
+  end
+
+  svg.circle cx: 128, cy: 176, r: 36, fill: "none", stroke: "black", stroke_width: 16
+end
+
 def movement_symbol(svg)
   svg.line x1: 128, y1: 0, x2: 128, y2: 256, stroke: "black", stroke_width: 8
   svg.g(transform: "scale(0.5) translate(32,128)") { move_symbol(svg, "black") }
